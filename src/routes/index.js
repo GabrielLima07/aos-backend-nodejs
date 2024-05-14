@@ -1,5 +1,8 @@
+import lineRoutes from './line';
 import user from './user';
 
+
 export default {
-  user
+  user,
+  line:lineRoutes
 }

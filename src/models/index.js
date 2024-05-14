@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { Sequelize } from 'sequelize';
 import getUserModel from './user';
-
+import getLineModel from './line'; // Importe a função getLineModel
 
 const sequelize = new Sequelize(
   process.env.DATABASE,
@@ -15,6 +15,7 @@ const sequelize = new Sequelize(
 
 const models = {
   User: getUserModel(sequelize, Sequelize),
+  Line: getLineModel(sequelize, Sequelize)
   //TODO: Adicionar outros modelos aqui
 }
 
