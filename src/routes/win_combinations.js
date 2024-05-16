@@ -1,19 +1,23 @@
-import { error } from "console";
 import { Router } from "express";
-const WinCombination = require("../models/win_combinations")
+import { v4 as uuidv4 } from 'uuid';
 
 const router = Router()
 
-router.post("/win" , async(req,res) => {
+router.post("/" , async(req,res) => {
 
-    const win = await WinCombination.create(req.body)
+    const win = await req.context.models.WinCombinations.create({
+        id: uuidv4(),
+        description: req.body.description,
+        line_type: req.body.line_type,
+        squares_positions: req.body.squares_positions
+    })
     res.status(201).json(win)
 })
 
 
-router.get("/win/:id" , async(req,res) => {
+router.get("/:id" , async(req,res) => {
 
-    const win = await WinCombination.findByPk(req.params.id)
+    const win = await req.context.models.WinCombinations.findByPk(req.params.id)
      
     if(win){
         res.send(win)
@@ -25,22 +29,28 @@ router.get("/win/:id" , async(req,res) => {
 
 
 })
-router.get("win_combinations" , async(req,res) =>{
-    const win = await WinCombination.findAll()
+
+router.get("/" , async(req,res) =>{
+    const win = await req.context.models.WinCombinations.findAll()
     console.log(win)
     res.send(win)
 })
-router.delete("/deleteWin/:id" , async(req,res) => {
-    const win = await WinCombination.findByPk(req.params.id)
+
+router.delete("/:id" , async(req,res) => {
+    const win = await req.context.models.WinCombinations.findByPk(req.params.id)
 
     await win.destroy()
     res.status(204).json()
 })
-router.put("/win/:id" , async(req,res) => {
-    const win = await WinCombination.findByPk(req.params.id)
+router.put("/:id" , async(req,res) => {
+
+    const win = await req.context.models.WinCombinations.findByPk(req.params.id)
     await win.update(req.body)
     await win.save()
+
+
     res.json(win)
     
     
 })
+export default router
