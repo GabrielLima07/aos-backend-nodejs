@@ -1,7 +1,8 @@
 import "dotenv/config";
 import { Sequelize } from 'sequelize';
 import getUserModel from './user';
-import getLineModel from './line'; // Importe a função getLineModel
+import getProfileModel from './profile'; // Importando o modelo Profile
+import getLineModel from './line';
 import getMatchModel from "./match";
 import getUserMatchHistory from './user_match_history';
 
@@ -17,17 +18,17 @@ const sequelize = new Sequelize(
 
 const models = {
   User: getUserModel(sequelize, Sequelize),
+  Profile: getProfileModel(sequelize, Sequelize), // Definindo o modelo Profile
   Line: getLineModel(sequelize, Sequelize),
   Match: getMatchModel(sequelize, Sequelize),
   UserMatchHistory: getUserMatchHistory(sequelize, Sequelize),
-  //TODO: Adicionar outros modelos aqui
-}
+};
 
 Object.keys(models).forEach((key) => {
   if ('associate' in models[key]) {
     models[key].associate(models);
   }
-})
+});
 
 export { sequelize };
 

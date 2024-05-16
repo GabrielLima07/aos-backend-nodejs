@@ -25,19 +25,19 @@ app.use("/line", routes.line);
 app.use("/match", routes.match);
 app.use("/user_match_history", routes.userMatchHistory);
 
-const eraseDatabaseOnSync = process.env.ERASE_DB_ON_SYNC;
-const port = process.env.PORT;
+const eraseDatabaseOnSync = process.env.ERASE_DB_ON_SYNC === 'true';
+const port = process.env.PORT || 3000;
 
-sequelize.sync({ force: eraseDatabaseOnSync }).then(() => {
+sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
   if (eraseDatabaseOnSync) {
     createUsers();
     createLines();
   }
-  app.listen(port, () => console.log(`app listening on port ${port}!`));
+  app.listen(port, () => console.log(`App listening on port ${port}!`));
 });
 
 const createUsers = async () => {
-  await models.User.create({
+  const user1 = await models.User.create({
     id: uuidv4(),
     email: "gabriel@gmail.com",
     password: "coxinha123",
@@ -46,7 +46,7 @@ const createUsers = async () => {
     profile_pic: null,
   });
 
-  await models.User.create({
+  const user2 = await models.User.create({
     id: uuidv4(),
     email: "vinicius@gmail.com",
     password: "coxinha123",
@@ -71,6 +71,7 @@ const createLines = async () => {
       line_type: "vertical",
       squares_positions: ["B1", "B2", "B3"],
     });
+
 
     await models.Line.create({
       id: uuidv4(),
