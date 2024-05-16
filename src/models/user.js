@@ -1,43 +1,56 @@
-// models/user.js
-const getUserModel = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+const getUserModel = (sequelize, { DataTypes }) => {
+  const User = sequelize.define("user", {
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
       primaryKey: true,
+      validate: {
+        notEmpty: true,
+      },
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
       unique: true,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        isEmail: true,
+      },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
     },
     points: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
+      type: DataTypes.INTEGER
     },
     profile_pic: {
       type: DataTypes.STRING,
-      allowNull: true,
-    },
+      isUrl: true
+    }
   });
 
-  User.associate = (models) => {
-    User.hasOne(models.Profile, {
-      foreignKey: 'userId',
-      as: 'profile',
-    });
-  };
+  /* User.associate = (models) => {
+    User.hasMany(models.User_match_history, { onDelete: "CASCADE" });
+    User.hasMany(models.Match, { onDelete: "CASCADE"});
+  }; */
 
   User.findByEmail = async (email) => {
-    return await User.findOne({ where: { email } });
+    let user = await User.findOne({
+      where: { email: email },
+    });
+
+    return user;
   };
 
   return User;
