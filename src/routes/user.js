@@ -10,12 +10,12 @@ router.get("/", async (req, res) => {
   res.send(users);
 });
 
-//router.get("/:userId", async (req, res) => {
-//  const user = await req.context.models.User.findByPk(
-//    req.params.userId
- // );
- // res.send(user);
-//});
+router.get("/:userId", async (req, res) => {
+  const user = await req.context.models.User.findByPk(
+    req.params.userId
+  );
+  res.send(user);
+});
 
 router.post("/", async (req, res) => {
   if (!req.body.email || !req.body.password || !req.body.name) {
