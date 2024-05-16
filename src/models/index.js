@@ -5,16 +5,9 @@ import getMoveModel from './move';
 import getLineModel from './line';
 import getMatchModel from "./match";
 import getUserMatchHistory from './user_match_history';
+import getWinCombinations from "./win_combinations";
 
-const sequelize = new Sequelize(
-  process.env.DATABASE,
-  process.env.DATABASE_USER,
-  process.env.DATABASE_PASSSWORD,
-  {
-    dialect: 'postgres',
-    host: process.env.DATABASE_HOST,
-  },
-);
+const sequelize = new Sequelize(process.env.POSTGRESQL_URL);
 
 const models = {
   User: getUserModel(sequelize, Sequelize),
@@ -22,6 +15,7 @@ const models = {
   Match: getMatchModel(sequelize, Sequelize),
   UserMatchHistory: getUserMatchHistory(sequelize, Sequelize),
   Move: getMoveModel(sequelize, Sequelize),
+  WinCombinations: getWinCombinations(sequelize,Sequelize)
 };
 
 Object.keys(models).forEach((key) => {
