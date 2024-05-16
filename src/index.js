@@ -1,8 +1,8 @@
 import 'dotenv/config';
 import cors from 'cors';
 import express from 'express';
-import routes from './routes'
-import models, { sequelize } from './models'
+import routes from './routes';
+import models, { sequelize } from './models';
 import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
@@ -16,25 +16,28 @@ app.use(async (req, res, next) => {
     me: await models.User.findByEmail("gabriel@gmail.com"),
   };
   next();
-})
+});
+
 app.use('/user', routes.user);
 app.use('/line', routes.line);
 app.use('/match', routes.match);
 app.use('/user_match_history', routes.userMatchHistory);
+app.use('/profile', routes.profile);
 
-const eraseDatabaseOnSync = process.env.ERASE_DB_ON_SYNC;
-const port = process.env.PORT;
+const eraseDatabaseOnSync = process.env.ERASE_DB_ON_SYNC === 'true';
+const port = process.env.PORT || 3000;
 
-sequelize.sync({ force: eraseDatabaseOnSync }).then(() => {
+sequelize.sync({ force: eraseDatabaseOnSync }).then(async () => {
   if (eraseDatabaseOnSync) {
-    createUsers();
-    createLines(); 
+    const users = await createUsers();
+    await createLines();
+    await createProfiles(users); // Chamar a função para criar perfis
   }
-  app.listen(port, () => console.log(`app listening on port ${port}!`));
+  app.listen(port, () => console.log(`App listening on port ${port}!`));
 });
 
 const createUsers = async () => {
-  await models.User.create({
+  const user1 = await models.User.create({
     id: uuidv4(),
     email: "gabriel@gmail.com",
     password: "coxinha123",
@@ -43,7 +46,7 @@ const createUsers = async () => {
     profile_pic: null
   });
 
-  await models.User.create({
+  const user2 = await models.User.create({
     id: uuidv4(),
     email: "vinicius@gmail.com",
     password: "coxinha123",
@@ -51,11 +54,32 @@ const createUsers = async () => {
     points: 0,
     profile_pic: null
   });
+
+  return [user1, user2];
+};
+
+const createProfiles = async (users) => {
+  await models.Profile.create({
+    userId: users[0].id,
+    profilePic: "https://example.com/pic1.jpg",
+    gamesPlayed: 10,
+    wins: 5,
+    friendsCount: 2,
+    ranking: 1
+  });
+
+  await models.Profile.create({
+    userId: users[1].id,
+    profilePic: "https://example.com/pic2.jpg",
+    gamesPlayed: 8,
+    wins: 3,
+    friendsCount: 1,
+    ranking: 2
+  });
 };
 
 const createLines = async () => {
   try {
-    
     await models.Line.create({
       id: uuidv4(),
       match_id: "match_id_1",
@@ -70,7 +94,6 @@ const createLines = async () => {
       squares_positions: ["B1", "B2", "B3"]
     });
 
-    
     await models.Line.create({
       id: uuidv4(),
       match_id: "match_id_3",
@@ -83,4 +106,3 @@ const createLines = async () => {
     console.error('Erro ao criar linhas:', error);
   }
 };
-
