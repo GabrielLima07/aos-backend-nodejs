@@ -17,12 +17,14 @@ app.use(async (req, res, next) => {
     me: await models.User.findByEmail("gabriel@gmail.com"),
   };
   next();
-});
+
+})
 
 app.use("/move", routes.move);
 app.use("/user", routes.user);
 app.use("/line", routes.line);
 app.use("/match", routes.match);
+app.use('/table', routes.table);
 app.use("/user_match_history", routes.userMatchHistory);
 app.use("/wincombinations", routes.winCombinations);
 
