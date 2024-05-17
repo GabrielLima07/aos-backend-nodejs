@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { v4 as uuidv4, validate } from 'uuid'; // Importe a função validate do módulo uuid
+import { v4 as uuidv4, validate } from 'uuid';
 
 const router = Router();
 
@@ -16,7 +16,6 @@ router.get("/:lineId", async (req, res) => {
 router.post("/", async (req, res) => {
   const { match_id, line_type, squares_positions } = req.body;
   
-  // Verifique se o match_id é um UUID válido
   if (!validate(match_id)) {
     return res.status(400).json({ error: "O match_id deve ser um UUID válido" });
   }

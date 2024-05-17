@@ -22,7 +22,7 @@ const getMoveModel = (sequelize, DataTypes) => {
 
   
   Move.associate = (models) => {
-  
+    Move.belongsTo(models.Match, { foreignKey: 'matchId', onDelete: "CASCADE" });
   };
 
   return Move;

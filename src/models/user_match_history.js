@@ -30,10 +30,10 @@ const getUserMatchHistoryModel = (sequelize, { DataTypes }) => {
         },
     });
 
-    /* UserMatchHistory.associate = (models) => {
-        UserMatchHistory.belongsTo(models.User);
-        UserMatchHistory.hasMany(models.Match);
-    } */
+    UserMatchHistory.associate = (models) => {
+        UserMatchHistory.belongsTo(models.User, { foreignKey: 'user_id' });
+        UserMatchHistory.belongsTo(models.Match, { foreignKey: 'match_id' });
+    }
     return UserMatchHistory;
 };
 
