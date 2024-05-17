@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 const router = Router();
 
 router.get("/",async (req,res)=>{
-    const table = await req.context.models.table.findAll();
+    const table = await req.context.models.Table.findAll();
     console.log(table)
     res.send(table);
 });
@@ -26,7 +26,7 @@ router.post("/",async(req,res)=>{
       res.send(table);
 })
 router.put("/:tableId", async(req,res)=>{
-    const user = await req.context.models.Table.findByPk(req.params.tableId);
+    const table = await req.context.models.Table.findByPk(req.params.tableId);
 
     await table.update({
         match_id: req.body.match_id !== undefined ? req.body.match_id : table.match_id,

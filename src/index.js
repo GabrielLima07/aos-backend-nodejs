@@ -20,6 +20,7 @@ app.use(async (req, res, next) => {
 app.use('/user', routes.user);
 app.use('/line', routes.line);
 app.use('/match', routes.match);
+app.use('/table', routes.table);
 
 const eraseDatabaseOnSync = process.env.ERASE_DB_ON_SYNC;
 const port = process.env.PORT;

@@ -5,7 +5,6 @@ const getTableModel = (sequelize,{DataTypes}) =>{
      const Table = sequelize.define('Table', {
           id: {
             type: DataTypes.UUID,
-            defaultValue: Sequelize.UUIDV4,
             primaryKey: true
           },
           match_id: {
@@ -24,9 +23,9 @@ const getTableModel = (sequelize,{DataTypes}) =>{
           // Outras opções do modelo aqui, como nome da tabela, timestamps, etc.
         });
         
-        Table.associate = (models) => {
-          models.Match.belongsTo(Table, { foreignKey: 'match_id', onDelete: "CASCADE" });
-        };
+       // Table.associate = (models) => {
+         // models.Match.belongsTo(Table, { foreignKey: 'match_id', onDelete: "CASCADE" });
+       // };
         
            return Table;
 }
