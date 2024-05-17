@@ -18,10 +18,6 @@ const getWinCombinations = (sequelize, { DataTypes }) => {
           squares_positions: {
             type: DataTypes.ARRAY(DataTypes.STRING),
             allowNull: false
-          },
-        combination: {
-            type: DataTypes.ARRAY(DataTypes.INTEGER),
-            allowNull: false
           }
         });
 
