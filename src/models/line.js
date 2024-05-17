@@ -4,10 +4,10 @@ const getLineModel = (sequelize, { DataTypes }) => {
         type: DataTypes.UUID,
         allowNull: false,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4 // Definindo um valor padrão usando UUID
+        defaultValue: DataTypes.UUIDV4
       },
       match_id: {
-        type: DataTypes.STRING, // Alterado para STRING
+        type: DataTypes.UUID,
         allowNull: false,
       },
       line_type: {
@@ -20,9 +20,13 @@ const getLineModel = (sequelize, { DataTypes }) => {
       squares_positions: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         allowNull: false,
-        defaultValue: [] // Definindo um valor padrão de uma lista vazia
+        defaultValue: []
       }
     });
+
+    Line.associate = (models) => {
+      Line.belongsTo(models.Match, { foreignKey: 'match_id', onDelete: "CASCADE" });
+    };
   
     Line.findByType = async (lineType) => {
         let lines = await Line.findAll({

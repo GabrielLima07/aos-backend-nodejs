@@ -40,10 +40,9 @@ const getUserModel = (sequelize, { DataTypes }) => {
     }
   });
 
-  /* User.associate = (models) => {
-    User.hasMany(models.User_match_history, { onDelete: "CASCADE" });
-    User.hasMany(models.Match, { onDelete: "CASCADE"});
-  }; */
+  User.associate = (models) => {
+    User.hasMany(models.UserMatchHistory, { as: 'match_histories', foreignKey: 'user_id', onDelete: "CASCADE" });
+  };
 
   User.findByEmail = async (email) => {
     let user = await User.findOne({

@@ -1,6 +1,3 @@
-import { table } from "console";
-
-
 const getTableModel = (sequelize,{DataTypes}) =>{
      const Table = sequelize.define('Table', {
           id: {
@@ -19,15 +16,13 @@ const getTableModel = (sequelize,{DataTypes}) =>{
             type: DataTypes.STRING,
             allowNull: false
           }
-        }, {
-          // Outras opções do modelo aqui, como nome da tabela, timestamps, etc.
         });
         
-       // Table.associate = (models) => {
-         // models.Match.belongsTo(Table, { foreignKey: 'match_id', onDelete: "CASCADE" });
-       // };
+        Table.associate = (models) => {
+          Table.belongsTo(models.Match, { foreignKey: 'match_id', onDelete: "CASCADE" });
+        };
         
-           return Table;
+      return Table;
 }
 export default getTableModel;
 
